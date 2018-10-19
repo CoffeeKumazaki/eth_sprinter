@@ -13,9 +13,18 @@ contract SprinterFactory {
     }
 
     Sprinter[] sprinters;
+    mapping (uint => address) public sprinterOwner;
+    mapping (address => uint) public ownerSprinterCount;
 
     function _createSprinter( string _name, uint _dna) private {
+
+        require(ownerSprinterCount[msg.sender]==0, "you already have some sprinters.");
+
         uint id = sprinters.push(Sprinter(_name, _dna)) - 1;
+
+        sprinterOwner[id] = msg.sender;
+        ownerSprinterCount[msg.sender]++;
+
         emit NewSprinter(id, _name, _dna);
     }
 
