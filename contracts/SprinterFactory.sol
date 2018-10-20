@@ -11,11 +11,13 @@ contract SprinterFactory is Ownable {
 
     uint dnaDigits = 16;
     uint dnaModulus = 10**dnaDigits;
+    uint cooldownTime = 1 days;
 
     struct Sprinter {
-        string name;
-        uint dna;
-        uint trainNum;
+        string  name;
+        uint    dna;
+        uint    trainNum;
+        uint32  breakTime;
     }
 
     Sprinter[] sprinters;
@@ -26,7 +28,7 @@ contract SprinterFactory is Ownable {
 
         require(ownerSprinterCount[msg.sender]==0, "you already have some sprinters.");
 
-        uint id = sprinters.push(Sprinter(_name, _dna, 0)) - 1;
+        uint id = sprinters.push(Sprinter(_name, _dna, 0, 0)) - 1;
 
         sprinterOwner[id] = msg.sender;
         ownerSprinterCount[msg.sender] = ownerSprinterCount[msg.sender].add(1);

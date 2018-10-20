@@ -20,14 +20,22 @@ contract KittyInterface {
 
 contract SprinterTraining is SprinterFactory {
 
-    address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
-    KittyInterface kittyContract = KittyInterface(ckAddress);
+    KittyInterface kittyContract;
+
+    function setKittyContractAddress(address _address) external onlyOwner {
+        kittyContract = KittyInterface(_address);
+    }
+
+    function _isReady( Sprinter storage _sprinter ) internal view returns (bool) {
+        return (_sprinter.breakTime <= now );
+    }
 
     function _train(uint _sprinterId, uint _trainerDna) private {
 
         Sprinter storage trainee = sprinters[_sprinterId];
         uint newDna = _trainerDna + trainee.dna;
         trainee.dna = newDna;
+        trainee.breakTime = uint32(now + cooldownTime);
 
         trainee.trainNum = trainee.trainNum.add(1);
     }
