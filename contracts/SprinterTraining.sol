@@ -21,8 +21,15 @@ contract SprinterTraining is SprinterFactory {
 
     KittyInterface kittyContract;
 
+    // kittyによるトレーニング料.
+    uint kittyTrainingFee = 0.001 ether;
+
     function setKittyContractAddress(address _address) external onlyOwner {
         kittyContract = KittyInterface(_address);
+    }
+
+    function setKittyTrainFee(uint _feeInEth) external onlyOwner {
+        kittyTrainingFee = _feeInEth;
     }
 
     function _isReady( Sprinter storage _sprinter ) internal view returns (bool) {
@@ -42,7 +49,7 @@ contract SprinterTraining is SprinterFactory {
     }
 
     // Sprinter を使ったトレーニング.
-    function trainSprinterWith( uint _sprinterId, uint _trainerId ) public {
+    function trainWithSprinter( uint _sprinterId, uint _trainerId ) external {
 
         require(msg.sender == sprinterOwner[_sprinterId], "this sprinter is not yours");
 
@@ -51,10 +58,11 @@ contract SprinterTraining is SprinterFactory {
     }
 
     // CryptoKitty を使ったトレーニング.
-    // トレーニング効率10倍:TODO.
-    function runawayFromKitty( uint _sprinterId, uint _kittyId ) public {
+    // 有料だが、トレーニング効率10倍:TODO.
+    function trainWithKitty( uint _sprinterId, uint _kittyId ) external payable {
 
         require(msg.sender == sprinterOwner[_sprinterId], "this sprinter is not yours");
+        require(msg.value >= kittyTrainingFee, "your payment is not enough");
 
         uint kittyDna;
         (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);

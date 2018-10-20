@@ -3,7 +3,7 @@ import "./SprinterTraining.sol";
 
 contract SprinterHelper is SprinterTraining {
 
-    function ChangeName( uint _sprinterId, string _newName) external {
+    function changeName( uint _sprinterId, string _newName) external {
         
         require(sprinterOwner[_sprinterId] == msg.sender, "this sprinter is not yours");
         Sprinter storage sprinter = sprinters[_sprinterId];
