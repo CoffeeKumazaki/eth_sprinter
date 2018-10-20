@@ -4,7 +4,7 @@ import "./SprinterFactory.sol";
 
 
 contract KittyInterface {
-    function getKitty() external view returns (
+    function getKitty(uint _id) external view returns (
         bool isGestating,
         bool isReady,
         uint256 cooldownIndex,
@@ -23,23 +23,33 @@ contract SprinterTraining is SprinterFactory {
     address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
     KittyInterface kittyContract = KittyInterface(ckAddress);
 
+    function _train(uint _sprinterId, uint _trainerDna) private {
+
+        Sprinter storage trainee = sprinters[_sprinterId];
+        uint newDna = _trainerDna + trainee.dna;
+        trainee.dna = newDna;
+
+        trainee.trainNum = trainee.trainNum.add(1);
+    }
+
     // Sprinter を使ったトレーニング.
     function trainSprinterWith( uint _sprinterId, uint _trainerId ) public {
 
         require(msg.sender == sprinterOwner[_sprinterId], "this sprinter is not yours");
 
-        Sprinter storage trainee = sprinters[_sprinterId];
-        Sprinter memory  trainer = sprinters[_trainerId];
-
-        uint newDna = trainee.dna + trainer.dna + 1;
-
-        trainee.trainNum = trainee.trainNum.add(1);
-        trainee.dna = newDna;
+        Sprinter memory trainer = sprinters[_trainerId];
+        _train(_sprinterId, trainer.dna);
     }
 
     // CryptoKitty を使ったトレーニング.
-    function runawayFromKitty( uint _sprinterId ) public {
+    // トレーニング効率10倍:TODO.
+    function runawayFromKitty( uint _sprinterId, uint _kittyId ) public {
 
+        require(msg.sender == sprinterOwner[_sprinterId], "this sprinter is not yours");
+
+        uint kittyDna;
+        (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);
         
+        _train(_sprinterId, kittyDna);
     }
 }
