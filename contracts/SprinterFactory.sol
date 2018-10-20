@@ -1,6 +1,11 @@
 pragma solidity ^0.4.19;
 
-contract SprinterFactory {
+import "../node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
+
+contract SprinterFactory is Ownable {
+
+    using SafeMath for uint256;
 
     event NewSprinter( uint sprinterId, string _name, uint dna);
 
@@ -10,6 +15,7 @@ contract SprinterFactory {
     struct Sprinter {
         string name;
         uint dna;
+        uint trainNum;
     }
 
     Sprinter[] sprinters;
@@ -20,10 +26,10 @@ contract SprinterFactory {
 
         require(ownerSprinterCount[msg.sender]==0, "you already have some sprinters.");
 
-        uint id = sprinters.push(Sprinter(_name, _dna)) - 1;
+        uint id = sprinters.push(Sprinter(_name, _dna, 0)) - 1;
 
         sprinterOwner[id] = msg.sender;
-        ownerSprinterCount[msg.sender]++;
+        ownerSprinterCount[msg.sender] = ownerSprinterCount[msg.sender].add(1);
 
         emit NewSprinter(id, _name, _dna);
     }
