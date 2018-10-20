@@ -2,7 +2,6 @@ pragma solidity ^0.4.19;
 
 import "./SprinterFactory.sol";
 
-
 contract KittyInterface {
     function getKitty(uint _id) external view returns (
         bool isGestating,
@@ -27,12 +26,14 @@ contract SprinterTraining is SprinterFactory {
     }
 
     function _isReady( Sprinter storage _sprinter ) internal view returns (bool) {
-        return (_sprinter.breakTime <= now );
+        return (_sprinter.breakTime <= now);
     }
 
     function _train(uint _sprinterId, uint _trainerDna) private {
 
         Sprinter storage trainee = sprinters[_sprinterId];
+        require(_isReady(trainee), "you are having breaking time");
+
         uint newDna = _trainerDna + trainee.dna;
         trainee.dna = newDna;
         trainee.breakTime = uint32(now + cooldownTime);
