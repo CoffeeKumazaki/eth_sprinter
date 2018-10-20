@@ -16,19 +16,28 @@ contract SprinterFactory is Ownable {
     struct Sprinter {
         string  name;
         uint    dna;
-        uint    trainNum;
-        uint32  breakTime;
+        uint    trainNum;       // トレーニング回数
+        uint    lastUpdate;     // 最新測定日
+        uint32  breakTime;      // トレーニング休息終了時間
+        uint32  bestScore;      // ベストスコア
+        uint32  recentScore;    // 最新スコア
     }
 
     Sprinter[] sprinters;
     mapping (uint => address) public sprinterOwner;
     mapping (address => uint) public ownerSprinterCount;
 
+    modifier ownerOf(uint _sprinterId) {
+        require(msg.sender == sprinterOwner[_sprinterId], "this sprinter is not yours");
+        _;
+    }
+
+
     function _createSprinter( string _name, uint _dna) private {
 
         require(ownerSprinterCount[msg.sender]==0, "you already have some sprinters.");
 
-        uint id = sprinters.push(Sprinter(_name, _dna, 0, 0)) - 1;
+        uint id = sprinters.push(Sprinter(_name, _dna, 0, 0, 0, 0, 0)) - 1;
 
         sprinterOwner[id] = msg.sender;
         ownerSprinterCount[msg.sender] = ownerSprinterCount[msg.sender].add(1);
