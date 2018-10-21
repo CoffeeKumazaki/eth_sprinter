@@ -18,7 +18,7 @@ Webからコントラクトへアクセスするインターフェイスを実�
 ## SprinterCompetition.sol
 `Sprinter`のスコア更新コントラクト  
 才能と努力の成果を試せ!  
-※タイムを競う予定だったが、小数を扱えないため、短距離走のスコアをどう表現するか検討中...
+※タイムを競う予定だったが、小数を扱えないため、短距離走のスコアをどう表現するか検討中...
 
 ## SprinterOwnership.sol
 `Sprinter`をNon-Fungible Token(NFT)として扱うために`ERC721`を継承  
