@@ -12,7 +12,7 @@
 無料のセルフトレーニングと、CryptoKittiesとの有料トレーニングを提供  
 
 ## SprinterHelper.sol
-Webからコントラクトへアクセスするインターフェイスを実装  
+Webからコントラクトへアクセスするインターフェイスを実装  
 `Sprinter`の可変パラメータ変更インターフェイス, オーナーの所持`Sprinter`取得
 
 ## SprinterCompetition.sol
@@ -21,4 +21,5 @@ Webからコントラクトへアクセスするインターフェイスを実�
 ※タイムを競う予定だったが、小数を扱えないため、短距離走のスコアをどう表現するか検討中...
 
 ## SprinterOwnership.sol
-`Sprinter`をNon-Fungible Token(NFT)として扱うために`ERC721`を継承  
+`Sprinter`をNon-Fungible Token(NFT)として扱うために`ERC721`を継承  
+
