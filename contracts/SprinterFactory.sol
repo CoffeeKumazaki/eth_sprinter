@@ -27,7 +27,7 @@ contract SprinterFactory is Ownable {
     mapping (uint => address) public sprinterOwner;
     mapping (address => uint) public ownerSprinterCount;
 
-    modifier ownerOf(uint _sprinterId) {
+    modifier onlyOwnerOf(uint _sprinterId) {
         require(msg.sender == sprinterOwner[_sprinterId], "this sprinter is not yours");
         _;
     }

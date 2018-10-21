@@ -18,7 +18,7 @@ contract SprinterCompetition is SprinterHelper {
         }
     }
 
-    function sprint( uint _sprinterId) external ownerOf(_sprinterId) {
+    function sprint( uint _sprinterId) external onlyOwnerOf(_sprinterId) {
 
         Sprinter storage mySprinter = sprinters[_sprinterId];
 

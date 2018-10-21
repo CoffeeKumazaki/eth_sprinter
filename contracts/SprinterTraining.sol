@@ -49,7 +49,7 @@ contract SprinterTraining is SprinterFactory {
     }
 
     // Sprinter を使ったトレーニング.
-    function trainWithSprinter( uint _sprinterId, uint _trainerId ) external ownerOf(_sprinterId) {
+    function trainWithSprinter( uint _sprinterId, uint _trainerId ) external onlyOwnerOf(_sprinterId) {
 
         Sprinter memory trainer = sprinters[_trainerId];
         _train(_sprinterId, trainer.dna);
@@ -57,7 +57,7 @@ contract SprinterTraining is SprinterFactory {
 
     // CryptoKitty を使ったトレーニング.
     // 有料だが、トレーニング効率10倍:TODO.
-    function trainWithKitty( uint _sprinterId, uint _kittyId ) external payable ownerOf(_sprinterId) {
+    function trainWithKitty( uint _sprinterId, uint _kittyId ) external payable onlyOwnerOf(_sprinterId) {
 
         require(msg.value >= kittyTrainingFee, "your payment is not enough");
 
