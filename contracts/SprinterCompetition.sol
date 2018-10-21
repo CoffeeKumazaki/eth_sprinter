@@ -14,7 +14,7 @@ contract SprinterCompetition is SprinterHelper {
             return 0;
         }
         else {
-            return uint(keccak256(now, msg.sender, randNonce)) % _modulus;
+            return uint(keccak256(abi.encodePacked(now, msg.sender, randNonce))) % _modulus;
         }
     }
 
