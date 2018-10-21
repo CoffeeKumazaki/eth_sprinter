@@ -5,13 +5,22 @@ import "../node_modules/openzeppelin-solidity/contracts/token/ERC721/ERC721Basic
 
 contract SprinterOwnership is SprinterCompetition, ERC721Basic {
 
-    function balanceOf(address _owner) public view returns (uint256 _balance) {
+    mapping(uint => address) sprinterApproval;
+
+
+    function balanceOf(address _owner) public view returns (uint256) {
+        require(_owner != address(0), "invalid owner address");
         return ownerSprinterCount[_owner];
     }
 
+    function ownerOf(uint256 _tokenId) public view returns (address) {
+        address owner = sprinterOwner[_tokenId];
+        require(owner != address(0), "invalid owner address");
+        return owner;
+    }
 
-    function ownerOf(uint256 _tokenId) public view returns (address _owner) {
-        return sprinterOwner[_tokenId];
+    function exists(uint256 _tokenId) public view returns (bool) {
+        return sprinterOwner[_tokenId] != address(0);
     }
 
 
@@ -29,5 +38,12 @@ contract SprinterOwnership is SprinterCompetition, ERC721Basic {
     function transfer(address _to, uint256 _tokenId) public onlyOwnerOf(_tokenId) {
         _transfer(msg.sender, _to, _tokenId);
     }
+
+    function approve( address _to, uint256 _tokenId) public onlyOwnerOf(_tokenId) {
+        sprinterApproval[_tokenId] = _to;
+        emit Approval(msg.sender, _to, _tokenId);
+    }
+
+
 
 }
